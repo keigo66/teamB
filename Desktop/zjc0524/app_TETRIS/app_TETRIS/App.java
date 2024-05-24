@@ -23,7 +23,7 @@ public class App extends JFrame {
         initControls();
        
         setTitle("Tetris");
-        setSize(300, 600);
+        setSize(500, 690); // 增加?度以?示下一个ミノ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -60,6 +60,10 @@ public class App extends JFrame {
     public void updateMino(Mino mino) {
         this.mino = mino;
         initControls();
+    }
+
+    public void updateNextMino(Mino nextMino) {
+        this.nextMino = nextMino;
     }
 
     private void initControls() {
@@ -111,20 +115,49 @@ public class App extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.BLACK);
+
+    g.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 1, (ga.getFieldHight() + 3) * 28);
+
+    
+        // ?制游?区域
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
+                    g.setColor(ga.getFieldColors()[y][x]); // 使用存?的?色
                     g.fillRect(x * 30, y * 30, 30, 30);
                 } else {
+                    g.setColor(Color.BLACK); // ?置?黑色
                     g.drawRect(x * 30, y * 30, 30, 30);
                 }
             }
         }
-        g.setColor(Color.RED);
+        // ?制当前ミノ
+        g.setColor(mino.getColor());
+        
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     g.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
+                }
+            }
+        }
+        // ?制下一个ミノ
+        drawNextMino(g, nextMino);
+    }
+    
+
+    private void drawNextMino(Graphics g, Mino nextMino) {
+        int offsetX = 380; // ?整?个?以向右移?
+        int offsetY = 60; // ?整?个?以向下移?
+
+        g.setColor(Color.BLACK);
+        g.drawString("Next Mino:", offsetX, offsetY - 10); // ??位置
+
+        g.setColor(nextMino.getColor());
+        for (int y = 0; y < nextMino.getMinoSize(); y++) {
+            for (int x = 0; x < nextMino.getMinoSize(); x++) {
+                if (nextMino.getMino()[0][y][x] == 1) {
+                    g.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
                 }
             }
         }

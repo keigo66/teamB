@@ -1,19 +1,25 @@
 package app_TETRIS;
 
+import java.awt.Color;
+
 public class GameArea {
     private int fieldHight = 21;
     private int fieldWidth = 12;
     private int grandHight = 30;
     private int grandWidth = 20;
     private int[][] field;
+    private Color[][] fieldColors; 
     private int[][] bufferField;
+    private Color[][] bufferFieldColors; 
     private int score = 0;
     private int linecount = 0;
     private String name;
 
     public GameArea() {
         this.field = new int[grandHight][grandWidth];
+        this.fieldColors = new Color[grandHight][grandWidth]; 
         this.bufferField = new int[grandHight][grandWidth];
+        this.bufferFieldColors = new Color[grandHight][grandWidth]; 
         initBufferField();
         initField();
     }
@@ -55,6 +61,14 @@ public class GameArea {
         return this.field;
     }
 
+    public Color[][] getFieldColors() {
+        return this.fieldColors;
+    }
+
+    public Color[][] getBufferFieldColors() {
+        return this.bufferFieldColors;
+    }
+
     public GameArea(String name) {
         this.name = name;
     }
@@ -71,6 +85,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 field[y][x] = bufferField[y][x];
+                fieldColors[y][x] = bufferFieldColors[y][x]; 
             }
         }
     }
@@ -79,6 +94,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 bufferField[y][x] = 0;
+                bufferFieldColors[y][x] = null; 
             }
         }
         for (int y = 0; y < getFieldHight(); y++) {
@@ -102,7 +118,7 @@ public class GameArea {
     }
 
     public void drawNextMino(Mino nextMino) {
-              int[][][] m = nextMino.getMino();
+        int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
                 System.out.printf("%s", (m[0][y][x] == 1 ? "■" : "□"));
@@ -127,7 +143,10 @@ public class GameArea {
     public void fieldAddMino(Mino mino) {
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.field[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
+                    this.field[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
+                    this.fieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor();
+                }
             }
         }
     }
@@ -135,7 +154,10 @@ public class GameArea {
     public void bufferFieldAddMino(Mino mino) {
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
+                    this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
+                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); 
+                }
             }
         }
     }
@@ -177,6 +199,7 @@ public class GameArea {
                 for (int _y = y - 1; _y > 0; _y--) {
                     for (int x = 0; x < getFieldWidth(); x++) {
                         bufferField[_y + 1][x] = bufferField[_y][x];
+                        bufferFieldColors[_y + 1][x] = bufferFieldColors[_y][x]; // 移动颜色
                     }
                 }
                 this.linecount++;

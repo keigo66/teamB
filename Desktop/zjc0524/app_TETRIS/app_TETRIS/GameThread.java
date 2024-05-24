@@ -26,7 +26,9 @@ public class GameThread extends Thread {
 
     public void run() {
         while (true) {
-            ga.moveDown(mino);
+            if (!ga.isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())) {
+                ga.moveDown(mino);
+            }
 
             if (ga.isCollison(mino)) {
                 if (mino.getMinoY() <= 1) {
@@ -38,12 +40,9 @@ public class GameThread extends Thread {
                 ga.bufferFieldAddMino(mino);
                 ga.eraseLine();
                 ga.initField();
-                mino.initMino();
                 this.mino = nextMino;
                 this.nextMino = new Mino();
-               
-                // 更新 App 中的 mino 引用并重新绑定键盘输入
-                app.updateMino(this.mino);
+                app.updateMino(this.mino); // 更新 App 中的 mino 引用并重新绑定键盘输入
             } else {
                 ga.initField();
                 ga.fieldAddMino(mino);

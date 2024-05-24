@@ -1,6 +1,7 @@
 package app_TETRIS;
 
 import java.util.Random;
+import java.awt.Color;
 
 public class Mino {
 
@@ -11,6 +12,7 @@ public class Mino {
     private int minoType;
     private int minoAngle;
     private int minoAngleSize = 4;
+    private Color color;//ミノの色
 
     private int[][][] mino_I = {
         { { 1, 0, 0, 0 }, { 1, 0, 0, 0 }, { 1, 0, 0, 0 }, { 1, 0, 0, 0 }, }, // 0 degrees
@@ -68,6 +70,7 @@ public class Mino {
         setMinoType();
         setMinoAngle();
         randSet();
+        setColor(); //ミノの色を設定
     }
 
     public void initMino() {
@@ -76,7 +79,40 @@ public class Mino {
         setMinoType();
         setMinoAngle();
         randSet();
+        setColor(); //ミノの色を設定
     }
+    /******【ミノの色を設定するメソッド】********/
+    private void setColor(){
+        switch (getMinoType()) {
+            case 1:
+                this.color=new Color(166,196,228);//Iミノは青色
+                break;
+            case 2:
+               this.color=new Color(250,217,120);//Oミノは黄色
+                break;
+            case 3:
+                this.color=new Color(157,194,132);//Sミノは緑色
+                break;
+            case 4:
+                this.color=new Color(210,109,106);//Zミノは赤色
+                break;
+            case 5:
+                this.color=new Color(0,0,139);//Jミノは深青色
+                break;
+            case 6:
+                this.color=new Color(247,180,118);//Lミノはオレンジ色
+                break;
+            case 7:
+                this.color=new Color(138,126,190);//Tミノはパープル色
+                break;
+        }
+    }
+
+    //ミノの色を取得するメソッド
+    public Color getColor(){
+        return this.color;
+    }
+    /*****************************************************/
 
     public int[][][] getMino() {
         return minoTypes;
