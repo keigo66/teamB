@@ -1,19 +1,25 @@
 package app_TETRIS;
 
+import java.awt.Color;
+
 public class GameArea {
     private int fieldHight = 21;
     private int fieldWidth = 12;
     private int grandHight = 30;
     private int grandWidth = 20;
     private int[][] field;
+    private Color[][] fieldColors; 
     private int[][] bufferField;
+    private Color[][] bufferFieldColors; 
     private int score = 0;
     private int linecount = 0;
     private String name;
 
     public GameArea() {
         this.field = new int[grandHight][grandWidth];
+        this.fieldColors = new Color[grandHight][grandWidth]; 
         this.bufferField = new int[grandHight][grandWidth];
+        this.bufferFieldColors = new Color[grandHight][grandWidth]; 
         initBufferField();
         initField();
     }
@@ -55,6 +61,14 @@ public class GameArea {
         return this.field;
     }
 
+    public Color[][] getFieldColors() {
+        return this.fieldColors;
+    }
+
+    public Color[][] getBufferFieldColors() {
+        return this.bufferFieldColors;
+    }
+
     public GameArea(String name) {
         this.name = name;
     }
@@ -67,34 +81,35 @@ public class GameArea {
         this.name = name;
     }
 
-    public void initField() {
+    public void initField() {//バッファフィールドの状態をゲームフィールドにコピー
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 field[y][x] = bufferField[y][x];
+                fieldColors[y][x] = bufferFieldColors[y][x]; 
             }
         }
     }
 
-    public void initBufferField() {
+    public void initBufferField() {//バッファフィールドを初期化0
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 bufferField[y][x] = 0;
+                bufferFieldColors[y][x] = null; 
             }
         }
         for (int y = 0; y < getFieldHight(); y++) {
             bufferField[y][0] = bufferField[y][getFieldWidth() - 1] = 1;
-        }
+        }//横壁を1に設定
         for (int x = 0; x < getFieldWidth(); x++) {
             bufferField[getFieldHight() - 1][x] = 1;
-        }
-      
+        }//床を1に設定
     }
 
     public void drawField() {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 System.out.printf("%s", (field[y][x] == 1 ? "■" : "□"));
-            }
+            }//ゲームフィールドをコンソールに描画
             System.out.println();
         }
         System.out.println("Lines cleared: " + linecount);
@@ -103,7 +118,7 @@ public class GameArea {
     }
 
     public void drawNextMino(Mino nextMino) {
-              int[][][] m = nextMino.getMino();
+        int[][][] m = nextMino.getMino();
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++) {
                 System.out.printf("%s", (m[0][y][x] == 1 ? "■" : "□"));
@@ -112,7 +127,7 @@ public class GameArea {
         }
     }
 
-    public void drawFieldAndMino(Mino mino, Mino nextMino) {
+    public void drawFieldAndMino(Mino mino, Mino nextMino) {//使用されていないメソッド？
         if (isCollison(mino)) {
             bufferFieldAddMino(mino);
             initField();
@@ -125,28 +140,35 @@ public class GameArea {
         System.out.println();
     }
 
-    public void fieldAddMino(Mino mino) {
+    public void fieldAddMino(Mino mino) {//フィールド内にミノを追加
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.field[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {//指定の角度のミノを、座標に書き込む
+                    this.field[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
+                    this.fieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor();
+                }
             }
         }
     }
 
-    public void bufferFieldAddMino(Mino mino) {
+    public void bufferFieldAddMino(Mino mino) {//ミノの位置をバッファフィールドに追加
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
-                this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] |= mino.getMino()[mino.getMinoAngle()][y][x];
+                if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
+                    this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
+                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); 
+                }
             }
         }
     }
 
-    public boolean isCollison(Mino mino) {
+    public boolean isCollison(Mino mino) {//ミノの現在位置、または指定位置での衝突をチェック 
         for (int r = 0; r < mino.getMinoSize(); r++) {
             for (int c = 0; c < mino.getMinoSize(); c++) {
                 if (this.bufferField[mino.getMinoY() + r + 1][mino.getMinoX() + c] == 1
                         && mino.getMino()[mino.getMinoAngle()][r][c] == 1) {
-                    return true;
+                            //BufferFieldの特定の位置にブロックがあり、かつ与えられたミノの特定の形状と位置にもブロックがある場合
+                            return true;
                 }
             }
         }
@@ -166,7 +188,7 @@ public class GameArea {
 
     public void eraseLine() {
         boolean isFill = true;
-        resetCount();
+        resetCount();//linecount =0
 
         for (int y = getFieldHight() - 2; y > 0; y--) {
             for (int x = 1; x < getFieldWidth() - 1; x++) {
@@ -174,10 +196,11 @@ public class GameArea {
                     isFill = false;
                 }
             }
-            if (isFill) {
+            if (isFill) {//一行完全に埋まったとき
                 for (int _y = y - 1; _y > 0; _y--) {
                     for (int x = 0; x < getFieldWidth(); x++) {
-                        bufferField[_y + 1][x] = bufferField[_y][x];
+                        bufferField[_y + 1][x] = bufferField[_y][x];//上のラインを1行下に移動
+                        bufferFieldColors[_y + 1][x] = bufferFieldColors[_y][x]; // 色の塗りつぶし
                     }
                 }
                 this.linecount++;
@@ -188,7 +211,7 @@ public class GameArea {
     }
 
     public void addScore() {
-        int count = getCount();
+        int count = getCount();//linecount
         int intMax = 21_4748_3647;
 
         switch (count) {

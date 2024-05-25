@@ -1,0 +1,38 @@
+sequenceDiagram
+    participant GameThread
+    participant GameArea
+    participant Mino
+    participant App
+    participant System
+
+    loop every second
+        GameThread ->> GameArea: isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())
+        note right of GameArea: Check if there is a collision
+        
+        GameArea -->> GameThread: false (no collision)
+        GameThread ->> GameArea: moveDown(mino)
+        
+        GameArea -->> GameThread: true (collision)
+        GameThread ->> GameArea: isCollison(mino)
+        
+        note right of GameArea: Check if collision at top
+        GameArea -->> GameThread: true (at top)
+        GameThread ->> System: exit(0) (GameOver)
+        
+        GameArea -->> GameThread: false (not at top)
+        GameThread ->> GameArea: bufferFieldAddMino(mino)
+        GameThread ->> GameArea: eraseLine()
+        GameThread ->> GameArea: initField()
+        
+        note right of GameThread: Create new Mino
+        GameThread ->> GameThread: mino = nextMino
+        GameThread ->> GameThread: nextMino = new Mino()
+        GameThread ->> App: updateMino(mino)
+        
+        GameThread ->> GameArea: initField()
+        GameThread ->> GameArea: fieldAddMino(mino)
+        GameThread ->> App: repaint()
+        GameThread ->> GameArea: drawNextMino(nextMino)
+        
+        GameThread ->> GameThread: sleep(1000)
+    end

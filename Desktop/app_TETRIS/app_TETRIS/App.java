@@ -19,11 +19,11 @@ public class App extends JFrame {
         this.mino = new Mino();
         this.ga = new GameArea();
         this.nextMino = new Mino();
-        new GameThread(mino, ga, nextMino, this).start();
+        new GameThread(mino, ga, nextMino, this).start();//GameThreadé–‹å§‹
         initControls();
        
         setTitle("Tetris");
-        setSize(500, 690); // ú‰Á?“xˆÈ?¦‰ºˆê˜¢ƒ~ƒm
+        setSize(500, 690); // ç”»é¢ã‚µã‚¤ã‚ºã®èª¿æ•´
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -38,7 +38,7 @@ public class App extends JFrame {
         int l = name.length();
         if (0 < l && l <= 16) {
             System.out.println("Welcome " + name + "!");
-            GameArea player = new GameArea();
+            GameArea player = new GameArea();//GameArea ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
             player.setName(name);
         } else {
             System.out.println("Guest");
@@ -51,7 +51,7 @@ public class App extends JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new App().setVisible(true);
+                new App().setVisible(true);//app ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆã€å¯è¦–åŒ–
             }
         });
         sc.close();
@@ -119,19 +119,19 @@ public class App extends JFrame {
     g.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 1, (ga.getFieldHight() + 3) * 28);
 
     
-        // ?§Ÿà?‹æˆæ
+        // ?ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
-                    g.setColor(ga.getFieldColors()[y][x]); // g—p‘¶?“I?F
+                    g.setColor(ga.getFieldColors()[y][x]); // ï¿½gï¿½pï¿½ï¿½?ï¿½I?ï¿½F
                     g.fillRect(x * 30, y * 30, 30, 30);
                 } else {
-                    g.setColor(Color.BLACK); // ?’u?üKF
+                    g.setColor(Color.BLACK); // ?ï¿½u?ï¿½Kï¿½F
                     g.drawRect(x * 30, y * 30, 30, 30);
                 }
             }
         }
-        // ?§“–‘Oƒ~ƒm
+        // ?ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½~ï¿½m
         g.setColor(mino.getColor());
         
         for (int y = 0; y < mino.getMinoSize(); y++) {
@@ -141,17 +141,17 @@ public class App extends JFrame {
                 }
             }
         }
-        // ?§‰ºˆê˜¢ƒ~ƒm
+        // ?ï¿½ï¿½ï¿½ï¿½ï¿½ê˜¢ï¿½~ï¿½m
         drawNextMino(g, nextMino);
     }
     
 
     private void drawNextMino(Graphics g, Mino nextMino) {
-        int offsetX = 380; // ?®?˜¢?ˆÈŒü‰EˆÚ?
-        int offsetY = 60; // ?®?˜¢?ˆÈŒü‰ºˆÚ?
+        int offsetX = 380; // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ÈŒï¿½ï¿½Eï¿½ï¿½?
+        int offsetY = 60; // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ÈŒï¿½ï¿½ï¿½ï¿½ï¿½?
 
         g.setColor(Color.BLACK);
-        g.drawString("Next Mino:", offsetX, offsetY - 10); // ??ˆÊ’u
+        g.drawString("Next Mino:", offsetX, offsetY - 10); // ??ï¿½Ê’u
 
         g.setColor(nextMino.getColor());
         for (int y = 0; y < nextMino.getMinoSize(); y++) {

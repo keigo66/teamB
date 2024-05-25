@@ -7,9 +7,9 @@ public class Mino {
 
     private Random rand;
     private int minoSize = 4;
-    private int[][][] minoTypes;
-    private int x, y;
-    private int minoType;
+    private int[][][] minoTypes;//[角度][行][列]
+    private int x, y;//座標
+    private int minoType;//1-7
     private int minoAngle;
     private int minoAngleSize = 4;
     private Color color;//ミノの色

@@ -26,7 +26,9 @@ public class GameThread extends Thread {
 
     public void run() {
         while (true) {
-            ga.moveDown(mino);
+            if (!ga.isCollison(mino, mino.getMinoX(), mino.getMinoY() + 1, mino.getMinoAngle())) {
+                ga.moveDown(mino);
+            }
 
             if (ga.isCollison(mino)) {
                 if (mino.getMinoY() <= 1) {
@@ -38,23 +40,20 @@ public class GameThread extends Thread {
                 ga.bufferFieldAddMino(mino);
                 ga.eraseLine();
                 ga.initField();
-                mino.initMino();
-                this.mino = nextMino;
+                this.mino = nextMino;//次のミノの用意
                 this.nextMino = new Mino();
-               
-                // 更新 App 中的 mino 引用并重新绑定键盘输入
-                app.updateMino(this.mino);
+                app.updateMino(this.mino); // Appの中のMinoを更新、入力受付更新
             } else {
                 ga.initField();
                 ga.fieldAddMino(mino);
             }
-            app.repaint();
+            app.repaint();// 画面を最新の状態に更新
             System.out.println("NextMino");
             ga.drawNextMino(nextMino);
 
             try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
+                Thread.sleep(1000);//1秒間スリープ
+            } catch (InterruptedException ex) {//スレッドが一時停止中に他のスレッドから割り込まれた場合
                 Logger.getLogger(GameThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
