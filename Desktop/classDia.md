@@ -1,3 +1,4 @@
+```mermaid
 classDiagram
     class Appクラス {
         - GameArea gameArea
@@ -48,3 +49,4 @@ classDiagram
     GameThreadクラス --> GameAreaクラス
     GameThreadクラス  -->  Minoクラス
     Minoクラス  -->  GameAreaクラス
+```
