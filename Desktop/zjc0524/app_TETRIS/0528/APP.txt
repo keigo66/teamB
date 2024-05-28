@@ -16,18 +16,16 @@ public class App extends JFrame {
     private GameArea ga;
     private Mino mino;
     private Mino nextMino;
-    private String playerName;
 
-    public App(String playerName) {
+    public App() {
         this.mino = new Mino();
         this.ga = new GameArea();
         this.nextMino = new Mino();
-        this.playerName = playerName;  // �ۑ��߉Ɩ���
         new GameThread(mino, ga, nextMino, this).start();
         initControls();
 
         setTitle("Tetris");
-        setSize(500, 640); 
+        setSize(500, 640); // 增加宽度以显示下一个ミノ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -42,18 +40,20 @@ public class App extends JFrame {
         int l = name.length();
         if (0 < l && l <= 16) {
             System.out.println("Welcome " + name + "!");
+            GameArea player = new GameArea();
+            player.setName(name);
         } else {
-            name = "Guest";
             System.out.println("Guest");
+            GameArea player = new GameArea();
+            player.setName("Guest");
         }
 
         System.out.println("Press Enter to start!!");
         while ((System.in.read()) != '\n');
 
-        String finalName = name;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new App(finalName).setVisible(true);
+                new App().setVisible(true);
             }
         });
         sc.close();
@@ -116,126 +116,67 @@ public class App extends JFrame {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D) g; 
-<<<<<<< HEAD
+        Graphics2D g2d = (Graphics2D) g; // 将 Graphics 对象转换为 Graphics2D 对象
     
-       
+        // 绘制白色背景
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
     
-   
+        // 绘制分数
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
     
-        
-=======
-   
-     
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
-   
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
-       
-   
-        g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
-   
-       
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
+        // 绘制游戏区域
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
-                    g2d.setColor(ga.getFieldColors()[y][x]); 
+                    g2d.setColor(ga.getFieldColors()[y][x]); // 使用存储的颜色
                     g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY); 
-                    g2d.setStroke(new BasicStroke(3)); 
-<<<<<<< HEAD
-                    g2d.drawRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.DARK_GRAY); // 设置边框颜色为黑色
+                    g2d.setStroke(new BasicStroke(3)); // 设置边框宽度
+                    g2d.drawRect(x * 30, y * 30, 30, 30); // 绘制边框
                 } else {
-                    g2d.setColor(Color.BLACK); 
+                    g2d.setColor(Color.BLACK); // 设置为白色背景
                     g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY); 
-                    g2d.setStroke(new BasicStroke(1)); 
-=======
-                    g2d.drawRect(x * 30, y * 30, 30, 30); 
-                } else {
-                    g2d.setColor(Color.BLACK); 
-                    g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY);
-                    g2d.setStroke(new BasicStroke(1));
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
-                    g2d.drawRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.DARK_GRAY); // 设置为黑色边框
+                    g2d.setStroke(new BasicStroke(1)); // 设置背景格子的边框宽度
+                    g2d.drawRect(x * 30, y * 30, 30, 30); // 绘制边框
                 }
             }
         }
-<<<<<<< HEAD
     
-=======
-   
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
-       
+        // 绘制当前ミノ
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     g2d.setColor(mino.getColor());
                     g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
-<<<<<<< HEAD
-                    g2d.setColor(Color.BLACK); 
-                    g2d.setStroke(new BasicStroke(3));
-=======
-                    g2d.setColor(Color.WHITE); 
-                    g2d.setStroke(new BasicStroke(3)); 
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
-                    g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); 
+                    g2d.setColor(Color.BLACK); // 设置边框颜色为黑色
+                    g2d.setStroke(new BasicStroke(3)); // 设置边框宽度
+                    g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); // 绘制边框
                 }
             }
         }
-<<<<<<< HEAD
     
-       
+        // 绘制下一个ミノ
         drawNextMino(g2d, nextMino);
-        g2d.setColor(Color.BLACK);
-
-        g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
-
-=======
-   
-        
-        drawNextMino(g2d, nextMino);
-
-        g2d.setColor(Color.BLACK);
-        g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
-        g2d.drawString("TCS_B Group", getWidth()-100, getHeight()-30);
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
-        int offsetX = 390; 
-<<<<<<< HEAD
-        int offsetY = 90; 
+        int offsetX = 390; // 调整这个值以向右移动
+        int offsetY = 90; // 调整这个值以向下移动
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY - 10); 
-=======
-        int offsetY = 110; 
-        
-
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY     -18); 
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
+        g2d.drawString("Next Mino:", offsetX, offsetY - 10); // 标题位置
 
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
                 if (nextMino.getMino()[0][y][x] == 1) {
                     g2d.setColor(nextMino.getColor());
                     g2d.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
-<<<<<<< HEAD
-                    g2d.setColor(Color.BLACK); 
-=======
-                    g2d.setColor(Color.BLACK);
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
-                    g2d.setStroke(new BasicStroke(3)); 
-                    g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
+                    g2d.setColor(Color.BLACK); // 设置边框颜色为黑色
+                    g2d.setStroke(new BasicStroke(3)); // 设置边框宽度
+                    g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30); // 绘制边框
                 }
             }
         }

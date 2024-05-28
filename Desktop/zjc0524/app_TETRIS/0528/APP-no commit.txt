@@ -22,12 +22,12 @@ public class App extends JFrame {
         this.mino = new Mino();
         this.ga = new GameArea();
         this.nextMino = new Mino();
-        this.playerName = playerName;  // �ۑ��߉Ɩ���
+        this.playerName = playerName;  // 保存玩家名称
         new GameThread(mino, ga, nextMino, this).start();
         initControls();
 
         setTitle("Tetris");
-        setSize(500, 640); 
+        setSize(500, 640); // 增加宽度以显示下一个ミノ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -117,18 +117,6 @@ public class App extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g; 
-<<<<<<< HEAD
-    
-       
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
-    
-   
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
-    
-        
-=======
    
      
         g2d.setColor(Color.WHITE);
@@ -141,7 +129,6 @@ public class App extends JFrame {
         g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
    
        
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
@@ -149,91 +136,52 @@ public class App extends JFrame {
                     g2d.fillRect(x * 30, y * 30, 30, 30);
                     g2d.setColor(Color.DARK_GRAY); 
                     g2d.setStroke(new BasicStroke(3)); 
-<<<<<<< HEAD
-                    g2d.drawRect(x * 30, y * 30, 30, 30);
-                } else {
-                    g2d.setColor(Color.BLACK); 
-                    g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY); 
-                    g2d.setStroke(new BasicStroke(1)); 
-=======
                     g2d.drawRect(x * 30, y * 30, 30, 30); 
                 } else {
                     g2d.setColor(Color.BLACK); 
                     g2d.fillRect(x * 30, y * 30, 30, 30);
                     g2d.setColor(Color.DARK_GRAY);
                     g2d.setStroke(new BasicStroke(1));
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
                     g2d.drawRect(x * 30, y * 30, 30, 30);
                 }
             }
         }
-<<<<<<< HEAD
-    
-=======
    
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
        
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     g2d.setColor(mino.getColor());
                     g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
-<<<<<<< HEAD
-                    g2d.setColor(Color.BLACK); 
-                    g2d.setStroke(new BasicStroke(3));
-=======
                     g2d.setColor(Color.WHITE); 
                     g2d.setStroke(new BasicStroke(3)); 
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
                     g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); 
                 }
             }
         }
-<<<<<<< HEAD
-    
-       
-        drawNextMino(g2d, nextMino);
-        g2d.setColor(Color.BLACK);
-
-        g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
-
-=======
    
         
         drawNextMino(g2d, nextMino);
 
         g2d.setColor(Color.BLACK);
         g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
         g2d.drawString("TCS_B Group", getWidth()-100, getHeight()-30);
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
         int offsetX = 390; 
-<<<<<<< HEAD
-        int offsetY = 90; 
-
-        g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY - 10); 
-=======
         int offsetY = 110; 
         
 
         g2d.setColor(Color.BLACK);
         g2d.drawString("Next Mino:", offsetX, offsetY     -18); 
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
 
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
                 if (nextMino.getMino()[0][y][x] == 1) {
                     g2d.setColor(nextMino.getColor());
                     g2d.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
-<<<<<<< HEAD
-                    g2d.setColor(Color.BLACK); 
-=======
                     g2d.setColor(Color.BLACK);
->>>>>>> 0970c5635c57910b60697095ec722cb9903fc63b
                     g2d.setStroke(new BasicStroke(3)); 
                     g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
                 }
