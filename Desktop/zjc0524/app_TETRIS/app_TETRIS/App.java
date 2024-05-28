@@ -116,52 +116,51 @@ public class App extends JFrame {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D) g; // 将 Graphics ?象??? Graphics2D ?象
+        Graphics2D g2d = (Graphics2D) g; 
    
-        // ?制白色背景
+     
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
    
-        // ?制分数
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
        
-        // ?制玩家名称
+   
         g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
    
-        // ?制游?区域
+       
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
-                    g2d.setColor(ga.getFieldColors()[y][x]); // 使用存?的?色
+                    g2d.setColor(ga.getFieldColors()[y][x]); 
                     g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY); // ?置?框?色?黑色
-                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
-                    g2d.drawRect(x * 30, y * 30, 30, 30); // ?制?框
+                    g2d.setColor(Color.DARK_GRAY); 
+                    g2d.setStroke(new BasicStroke(3)); 
+                    g2d.drawRect(x * 30, y * 30, 30, 30); 
                 } else {
-                    g2d.setColor(Color.BLACK); // ?置?白色背景
+                    g2d.setColor(Color.BLACK); 
                     g2d.fillRect(x * 30, y * 30, 30, 30);
-                    g2d.setColor(Color.DARK_GRAY); // ?置?黑色?框
-                    g2d.setStroke(new BasicStroke(1)); // ?置背景格子的?框?度
-                    g2d.drawRect(x * 30, y * 30, 30, 30); // ?制?框
+                    g2d.setColor(Color.DARK_GRAY);
+                    g2d.setStroke(new BasicStroke(1));
+                    g2d.drawRect(x * 30, y * 30, 30, 30);
                 }
             }
         }
    
-        // ?制当前ミノ
+       
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     g2d.setColor(mino.getColor());
                     g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
-                    g2d.setColor(Color.WHITE); // ?置?框?色?黑色
-                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
-                    g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); // ?制?框
+                    g2d.setColor(Color.WHITE); 
+                    g2d.setStroke(new BasicStroke(3)); 
+                    g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); 
                 }
             }
         }
    
-        // ?制下一个ミノ
+        
         drawNextMino(g2d, nextMino);
 
         g2d.setColor(Color.BLACK);
@@ -170,21 +169,21 @@ public class App extends JFrame {
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
-        int offsetX = 390; // ?整?个?以向右移?
-        int offsetY = 110; // ?整?个?以向下移?
+        int offsetX = 390; 
+        int offsetY = 110; 
         
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY     -18); // ??位置
+        g2d.drawString("Next Mino:", offsetX, offsetY     -18); 
 
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
                 if (nextMino.getMino()[0][y][x] == 1) {
                     g2d.setColor(nextMino.getColor());
                     g2d.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
-                    g2d.setColor(Color.BLACK); // ?置?框?色?黑色
-                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
-                    g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30); // ?制?框
+                    g2d.setColor(Color.BLACK);
+                    g2d.setStroke(new BasicStroke(3)); 
+                    g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
                 }
             }
         }
