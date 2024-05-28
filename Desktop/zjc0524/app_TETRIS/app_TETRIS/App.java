@@ -7,7 +7,9 @@ import javax.swing.KeyStroke;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.BasicStroke;
 import java.util.Scanner;
 
 public class App extends JFrame {
@@ -21,9 +23,9 @@ public class App extends JFrame {
         this.nextMino = new Mino();
         new GameThread(mino, ga, nextMino, this).start();
         initControls();
-       
+
         setTitle("Tetris");
-        setSize(500, 690); // 增加?度以?示下一个ミノ
+        setSize(500, 640); // 增加?度以?示下一个ミノ
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -114,50 +116,67 @@ public class App extends JFrame {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.setColor(Color.BLACK);
-
-    g.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 1, (ga.getFieldHight() + 3) * 28);
-
+        Graphics2D g2d = (Graphics2D) g; // 将 Graphics ?象??? Graphics2D ?象
+    
+        // ?制白色背景
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    
+        // ?制分数
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
     
         // ?制游?区域
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
                 if (ga.getField()[y][x] == 1) {
-                    g.setColor(ga.getFieldColors()[y][x]); // 使用存?的?色
-                    g.fillRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(ga.getFieldColors()[y][x]); // 使用存?的?色
+                    g2d.fillRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.DARK_GRAY); // ?置?框?色?黑色
+                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
+                    g2d.drawRect(x * 30, y * 30, 30, 30); // ?制?框
                 } else {
-                    g.setColor(Color.BLACK); // ?置?黑色
-                    g.drawRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.BLACK); // ?置?白色背景
+                    g2d.fillRect(x * 30, y * 30, 30, 30);
+                    g2d.setColor(Color.DARK_GRAY); // ?置?黑色?框
+                    g2d.setStroke(new BasicStroke(1)); // ?置背景格子的?框?度
+                    g2d.drawRect(x * 30, y * 30, 30, 30); // ?制?框
                 }
             }
         }
+    
         // ?制当前ミノ
-        g.setColor(mino.getColor());
-        
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
-                    g.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
+                    g2d.setColor(mino.getColor());
+                    g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
+                    g2d.setColor(Color.BLACK); // ?置?框?色?黑色
+                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
+                    g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); // ?制?框
                 }
             }
         }
-        // ?制下一个ミノ
-        drawNextMino(g, nextMino);
-    }
     
+        // ?制下一个ミノ
+        drawNextMino(g2d, nextMino);
+    }
 
-    private void drawNextMino(Graphics g, Mino nextMino) {
-        int offsetX = 380; // ?整?个?以向右移?
-        int offsetY = 60; // ?整?个?以向下移?
+    private void drawNextMino(Graphics2D g2d, Mino nextMino) {
+        int offsetX = 390; // ?整?个?以向右移?
+        int offsetY = 90; // ?整?个?以向下移?
 
-        g.setColor(Color.BLACK);
-        g.drawString("Next Mino:", offsetX, offsetY - 10); // ??位置
+        g2d.setColor(Color.BLACK);
+        g2d.drawString("Next Mino:", offsetX, offsetY - 10); // ??位置
 
-        g.setColor(nextMino.getColor());
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
                 if (nextMino.getMino()[0][y][x] == 1) {
-                    g.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
+                    g2d.setColor(nextMino.getColor());
+                    g2d.fillRect(offsetX + x * 30, offsetY + y * 30, 30, 30);
+                    g2d.setColor(Color.BLACK); // ?置?框?色?黑色
+                    g2d.setStroke(new BasicStroke(3)); // ?置?框?度
+                    g2d.drawRect(offsetX + x * 30, offsetY + y * 30, 30, 30); // ?制?框
                 }
             }
         }

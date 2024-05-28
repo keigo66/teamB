@@ -85,7 +85,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 field[y][x] = bufferField[y][x];
-                fieldColors[y][x] = bufferFieldColors[y][x]; 
+                fieldColors[y][x] = bufferFieldColors[y][x]; // 初始化颜色数组
             }
         }
     }
@@ -94,7 +94,7 @@ public class GameArea {
         for (int y = 0; y < getFieldHight(); y++) {
             for (int x = 0; x < getFieldWidth(); x++) {
                 bufferField[y][x] = 0;
-                bufferFieldColors[y][x] = null; 
+                bufferFieldColors[y][x] = null; // 初始化缓冲区颜色数组
             }
         }
         for (int y = 0; y < getFieldHight(); y++) {
@@ -156,7 +156,7 @@ public class GameArea {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     this.bufferField[mino.getMinoY() + y][mino.getMinoX() + x] = 1;
-                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); 
+                    this.bufferFieldColors[mino.getMinoY() + y][mino.getMinoX() + x] = mino.getColor(); // 设置缓冲区颜色
                 }
             }
         }
@@ -186,34 +186,38 @@ public class GameArea {
     }
 
     public void eraseLine() {
-        boolean isFill = true;
-        resetCount();
+        boolean isFill;
+        int linesCleared = 0; // 记录消除的行数
 
         for (int y = getFieldHight() - 2; y > 0; y--) {
+            isFill = true;
             for (int x = 1; x < getFieldWidth() - 1; x++) {
                 if (bufferField[y][x] == 0) {
                     isFill = false;
+                    break;
                 }
             }
             if (isFill) {
-                for (int _y = y - 1; _y > 0; _y--) {
-                    for (int x = 0; x < getFieldWidth(); x++) {
-                        bufferField[_y + 1][x] = bufferField[_y][x];
-                        bufferFieldColors[_y + 1][x] = bufferFieldColors[_y][x]; // 移动颜色
+                linesCleared++;
+                // 消除行
+                for (int _y = y; _y > 0; _y--) {
+                    for (int x = 1; x < getFieldWidth() - 1; x++) {
+                        bufferField[_y][x] = bufferField[_y - 1][x];
+                        bufferFieldColors[_y][x] = bufferFieldColors[_y - 1][x];
                     }
                 }
-                this.linecount++;
+              
+                y++;
             }
-            isFill = true;
         }
-        addScore();
+
+        addScore(linesCleared); 
     }
 
-    public void addScore() {
-        int count = getCount();
+    public void addScore(int linesCleared) {
         int intMax = 21_4748_3647;
 
-        switch (count) {
+        switch (linesCleared) {
             case 1:
                 score = Math.min(score + 40, intMax);
                 break;

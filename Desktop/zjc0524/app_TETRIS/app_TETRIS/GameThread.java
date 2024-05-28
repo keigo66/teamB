@@ -42,7 +42,8 @@ public class GameThread extends Thread {
                 ga.initField();
                 this.mino = nextMino;
                 this.nextMino = new Mino();
-                app.updateMino(this.mino); // 更新 App 中的 mino 引用并重新绑定键盘输入
+                app.updateMino(this.mino); 
+                app.updateNextMino(this.nextMino);
             } else {
                 ga.initField();
                 ga.fieldAddMino(mino);
