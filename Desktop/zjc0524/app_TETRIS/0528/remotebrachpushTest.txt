@@ -1,0 +1,7 @@
+ローカル編集
+jun ブランチに移動
+リモートブランチからPull　→　git pull origin jun(この状態は、ローカルにリモートをコピーしている。追跡はしてないっぽい？)
+ファイル編集
+Git push origin jun
+
+2回目pUSH
