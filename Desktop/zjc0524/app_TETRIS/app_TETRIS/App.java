@@ -16,11 +16,13 @@ public class App extends JFrame {
     private GameArea ga;
     private Mino mino;
     private Mino nextMino;
+    private String playerName;
 
-    public App() {
+    public App(String playerName) {
         this.mino = new Mino();
         this.ga = new GameArea();
         this.nextMino = new Mino();
+        this.playerName = playerName;  // ï€ë∂äﬂâ∆ñºèÃ
         new GameThread(mino, ga, nextMino, this).start();
         initControls();
 
@@ -40,20 +42,18 @@ public class App extends JFrame {
         int l = name.length();
         if (0 < l && l <= 16) {
             System.out.println("Welcome " + name + "!");
-            GameArea player = new GameArea();
-            player.setName(name);
         } else {
+            name = "Guest";
             System.out.println("Guest");
-            GameArea player = new GameArea();
-            player.setName("Guest");
         }
 
         System.out.println("Press Enter to start!!");
         while ((System.in.read()) != '\n');
 
+        String finalName = name;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new App().setVisible(true);
+                new App(finalName).setVisible(true);
             }
         });
         sc.close();
@@ -117,15 +117,18 @@ public class App extends JFrame {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g; // è´ Graphics ?è€??? Graphics2D ?è€
-    
+   
         // ?êßîíêFîwåi
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
-    
+   
         // ?êßï™êî
         g2d.setColor(Color.BLACK);
         g2d.drawString("Score: " + ga.getScore(), (ga.getFieldWidth() + 1) * 30, 50);
-    
+       
+        // ?êßäﬂâ∆ñºèÃ
+        g2d.drawString("Player: " + playerName, (ga.getFieldWidth() + 1) * 30, 70);
+   
         // ?êßü‡?ãÊàÊ
         for (int y = 0; y < ga.getFieldHight(); y++) {
             for (int x = 0; x < ga.getFieldWidth(); x++) {
@@ -144,30 +147,35 @@ public class App extends JFrame {
                 }
             }
         }
-    
+   
         // ?êßìñëOÉ~Ém
         for (int y = 0; y < mino.getMinoSize(); y++) {
             for (int x = 0; x < mino.getMinoSize(); x++) {
                 if (mino.getMino()[mino.getMinoAngle()][y][x] == 1) {
                     g2d.setColor(mino.getColor());
                     g2d.fillRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30);
-                    g2d.setColor(Color.BLACK); // ?íu?ûy?êF?¸KêF
+                    g2d.setColor(Color.WHITE); // ?íu?ûy?êF?¸KêF
                     g2d.setStroke(new BasicStroke(3)); // ?íu?ûy?ìx
                     g2d.drawRect((mino.getMinoX() + x) * 30, (mino.getMinoY() + y) * 30, 30, 30); // ?êß?ûy
                 }
             }
         }
-    
+   
         // ?êßâ∫àÍò¢É~Ém
         drawNextMino(g2d, nextMino);
+
+        g2d.setColor(Color.BLACK);
+        g2d.setFont(g2d.getFont().deriveFont(java.awt.Font.BOLD));
+        g2d.drawString("TCS_B Group", getWidth()-100, getHeight()-30);
     }
 
     private void drawNextMino(Graphics2D g2d, Mino nextMino) {
         int offsetX = 390; // ?êÆ?ò¢?à»å¸âEà⁄?
-        int offsetY = 90; // ?êÆ?ò¢?à»å¸â∫à⁄?
+        int offsetY = 110; // ?êÆ?ò¢?à»å¸â∫à⁄?
+        
 
         g2d.setColor(Color.BLACK);
-        g2d.drawString("Next Mino:", offsetX, offsetY - 10); // ??à íu
+        g2d.drawString("Next Mino:", offsetX, offsetY     -18); // ??à íu
 
         for (int y = 0; y < nextMino.getMinoSize(); y++) {
             for (int x = 0; x < nextMino.getMinoSize(); x++) {
