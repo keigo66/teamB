@@ -1,0 +1,5 @@
+git checkout main
+git pull 
+edit this file
+git add & commit
+git push origin master
